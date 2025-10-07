@@ -25,7 +25,7 @@ const App: React.FC = () => {
   const [videoData, setVideoData] = useState<VideoData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [videoCount, setVideoCount] = useState<number>(30);
+  const [videoCount, setVideoCount] = useState<string>('30');
   
   const [magnifiedThumbnail, setMagnifiedThumbnail] = useState<string | null>(null);
 
@@ -81,6 +81,7 @@ const App: React.FC = () => {
 
     try {
       let videoIds: string[] = [];
+      const count = Math.max(1, Math.min(50, parseInt(videoCount, 10) || 30));
 
       if (searchType === 'url') {
         if (!url.trim()) {
@@ -93,7 +94,7 @@ const App: React.FC = () => {
         if (videoId) {
           videoIds = [videoId];
         } else if (channelIdentifier) {
-          videoIds = await getLatestVideoIdsFromChannel(channelIdentifier, apiKey, videoCount);
+          videoIds = await getLatestVideoIdsFromChannel(channelIdentifier, apiKey, count);
         } else {
           throw new Error('無効なYouTube動画またはチャンネルURLです。正しいURLを入力してください。');
         }
@@ -101,7 +102,7 @@ const App: React.FC = () => {
         if (!keyword.trim()) {
           throw new Error('検索キーワードを入力してください。');
         }
-        videoIds = await searchVideosByKeyword(keyword, apiKey, videoCount);
+        videoIds = await searchVideosByKeyword(keyword, apiKey, count);
       }
       
       if (videoIds.length > 0) {
@@ -281,7 +282,7 @@ const App: React.FC = () => {
                 min="1"
                 max="50"
                 value={videoCount}
-                onChange={(e) => setVideoCount(Math.max(1, Math.min(50, parseInt(e.target.value, 10) || 1)))}
+                onChange={(e) => setVideoCount(e.target.value)}
               />
             </div>
           </div>
