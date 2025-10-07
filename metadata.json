@@ -1,0 +1,5 @@
+{
+  "name": "YouTube Video Info Extractor",
+  "description": "An application to extract detailed information like thumbnail, title, view count, and subscriber count from a YouTube video URL. Users need to provide their own YouTube Data API key to use the service.",
+  "requestFramePermissions": []
+}
